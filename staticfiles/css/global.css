@@ -1,0 +1,68 @@
+
+.recipeCard {
+  background-color: white;
+  padding: 5px;
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  max-width: 25rem;
+  min-height: 5em;
+  max-height: 10em;
+  /* height: 20px;
+  margin: 5px; */
+}
+
+.recipeCard img {
+  display: block;
+  position: absolute;
+  height: 100%;
+}
+
+.recipecard_leftpane {
+    float: left;
+    background-color: rosybrown;
+}
+
+.recipecard_leftpane img {
+  height: calc(100% - 10px);
+}
+
+.recipecard_rightpane {
+  float: right;
+  max-width:150px;
+  word-wrap:break-word;
+  max-height: 70px;
+  overflow: hidden;
+}
+
+.card-title {
+  font-size: 1.2em;
+}
+
+.recipeCard_Info{
+  position: absolute;
+  background-color: #fff;
+  box-shadow:0 0 20px #fff;
+  bottom: 5px;
+  right: 5px;
+}
+
+.recipeContainer {
+  background-color: #e6e6e6;
+  /* height: 20px;
+  margin: 5px; */
+}
+
+.emptyDay, .emptyGroceryList{
+  color: lightgray;
+  font-style: italic;
+}
+
+
+.card-img-left img {
+  border-bottom-left-radius: calc(.25rem - 1px);
+  border-top-left-radius: calc(.25rem - 1px);
+  float: left;
+  padding-right: 1em;
+  margin-bottom: -1.25em;
+}

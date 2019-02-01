@@ -1,0 +1,18 @@
+<!-- <div id="{{recipe.guid}}" draggable="true" ondragstart="drag(event)" class="recipe">-{{recipe.name}}</div> -->
+{% load static %}
+<div id="{{recipe.guid}}" draggable="true" ondragstart="drag(event)" touchstart="drag(event)" class="recipeCard card border-secondary mb-3">
+
+  <div class="recipecard_container">
+    <div class="recipecard_leftpane">
+      <img class="recipecard_image" src="{% with 'images/userImages/recipeThumbnails/'|add:recipe.guid|add:'.jpg' as image_static %}  {% static image_static %} {% endwith %}" alt="" onerror="this.style.display='none'">
+    </div>
+    <div class="recipecard_rightpane">
+      <div class="recipecard_righttoppane">{{recipe.name}}</div>
+
+        <span class="recipeCard_Info">
+          <span><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp&nbsp{{recipe.minutesRequired}}</span>
+          <span><span class="glyphicon glyphicon-cutlery" aria-hidden="true" style="padding-left:1em"></span>&nbsp&nbsp{{recipe.servings}}</span>
+        </span>
+    </div>
+  </div>
+</div>

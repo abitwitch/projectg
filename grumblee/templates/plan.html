@@ -1,0 +1,273 @@
+<html>
+{% include '_partial_header.html' %}
+
+
+
+<script>
+
+
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    if (document.getElementById('recipes').contains(ev.target)) {
+      //drop in Recipes
+      var recipeGuid = ev.dataTransfer.getData("text");
+      var dayGuid=$("#"+recipeGuid).closest(".dayDrop")[0].id;
+      removeRecipeFromDay(recipeGuid,dayGuid);
+    } else if (ev.target.classList.contains("dayDrop") || ev.target.classList.contains("dayPlaceholder")) {
+      //add recipe to day
+      var recipeGuid = ev.dataTransfer.getData("text");
+      var dayGuid;
+      if (ev.target.classList.contains("dayPlaceholder")){
+        dayGuid = ev.target.parentElement.id;
+      } else {
+        dayGuid = ev.target.id;
+      }
+      addRecipeToDay(recipeGuid,dayGuid);
+    } else if (document.getElementById('groceryList').contains(ev.target)) {
+      //add ingredient to buy list
+      var ingredientGuid=ev.dataTransfer.getData("text");
+      addIngredientToWeek(ingredientGuid,1);
+      console.log("add");
+    } else if (document.getElementById('ingredients').contains(ev.target)) {
+      //drop back in ingredients
+      var ingredientGuid = ev.dataTransfer.getData("text");
+      removeIngredientFromWeek(ingredientGuid,-1);
+      console.log("remove");
+
+    }
+  }
+  function addRecipeToDay(recipeGuid,dayGuid){
+    //update DB
+    $.ajax({
+        url: '/addRecipeToDay/',
+        data: {
+          'recipeGuid': recipeGuid,
+          'dayGuid': dayGuid
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data.status);
+          for (var ingredientGuid in data.ingredients) {
+            if (data.ingredients.hasOwnProperty(ingredientGuid)) {
+              document.getElementById('groceryList').appendChild(document.getElementById(ingredientGuid));
+            }
+          }
+          refreshGroceryList();
+        }
+      });
+    //update grocery list
+    //addIngredientToWeek(ingredientGuid,overrideVal)
+    //update UI
+    dayElem=document.getElementById(dayGuid);
+    dayElem.appendChild(document.getElementById(recipeGuid));
+    refreshDay(dayElem);
+  }
+
+  function removeRecipeFromDay(recipeGuid,dayGuid){
+    //update DB
+    $.ajax({
+        url: '/removeRecipeFromDay/',
+        data: {
+          'recipeGuid': recipeGuid,
+          'dayGuid': dayGuid
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data.status);
+          for (var ingredientGuid in data.ingredients) {
+            if (data.ingredients.hasOwnProperty(ingredientGuid)) {
+              document.getElementById('ingredients').appendChild(document.getElementById(ingredientGuid));
+            }
+          }
+          refreshGroceryList();
+        }
+      });
+    //update UI
+    dayElem=document.getElementById(dayGuid);
+    document.getElementById('recipes').appendChild(document.getElementById(recipeGuid));
+    refreshDay(dayElem);
+
+  }
+
+  function refreshDay(dayElem){
+    if (dayElem.childElementCount==1) {
+      $("#"+dayElem.id+" .dayPlaceholder").show();
+      dayElem.classList.add('emptyDay');
+    }
+    else {
+      dayElem.classList.remove('emptyDay');
+      $("#"+dayElem.id+" .dayPlaceholder").hide();
+    }
+  }
+
+  function refreshGroceryList(){
+    groceryListElem=document.getElementById('groceryList');
+    if (groceryListElem.childElementCount==1) {
+      $("#groceryList .groceryListPlaceholder").show();
+      groceryListElem.classList.add('emptyGroceryList');
+    }
+    else {
+      groceryListElem.classList.remove('emptyGroceryList');
+      $("#groceryList .groceryListPlaceholder").hide();
+    }
+  }
+
+  function addIngredientToWeek(ingredientGuid,overrideVal){
+    //update DB
+    $.ajax({
+        url: '/updateIngredientForWeek/',
+        data: {
+          'ingredientGuid': ingredientGuid,
+          'weekGuid': '{{week.guid}}',
+          'overrideVal': overrideVal
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data.status);
+        }
+      });
+    //update UI
+    document.getElementById('groceryList').appendChild(document.getElementById(ingredientGuid));
+    refreshGroceryList();
+  }
+  function removeIngredientFromWeek(ingredientGuid,overrideVal){
+    //update DB
+    $.ajax({
+        url: '/updateIngredientForWeek/',
+        data: {
+          'ingredientGuid': ingredientGuid,
+          'weekGuid': '{{week.guid}}',
+          'overrideVal': overrideVal
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data.status);
+        }
+      });
+    //update UI
+    document.getElementById('ingredients').appendChild(document.getElementById(ingredientGuid));
+    refreshGroceryList();
+  }
+
+
+
+
+
+</script>
+
+<body>
+
+  <h1>Plan</h1>
+  <div id="test"></div>
+  <div>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Meal Plan</a>
+                </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table-striped" style="width:100%">
+                <tr>
+                  <td>
+                    <h3>Week</h3>({{week.guid}})
+                    <div class="panel-group" id="week">
+                      <!-- Built in react -->
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">Recipes</div>
+                        <div id="recipes" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body recipeContainer">
+                          {% for recipe in recipes %}
+                          {% include '_partial_recipeCard.html' with recipe=recipe %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- <div class="container">
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="weekdiv">
+                    ONE
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  TWO
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Grocery List</a>
+                </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table>
+              <tr>
+                <td>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Grocery list</div>
+                    <div id="groceryList" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body emptyGroceryList">
+                      <div class="groceryListPlaceholder">drag and drop a ingredient or add a recipe to the week</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Ingredients</div>
+                    <div id="ingredients" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body">
+                      {% for ingredient in ingredients %}
+                      <div id="{{ingredient.guid}}" draggable="true" ondragstart="drag(event)" class="ingredient">-{{ingredient.name}}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</body>
+<script type="text/babel">
+  var days= {{days|safe}}
+  // jQuery.each(days, function(id, val) {
+  //   ReactDOM.render(
+  //       <DayOfWeek dayID={id} dayName={val["dayName"]}/>,
+  //       document.getElementById('week')
+  //   );
+  // });
+  ReactDOM.render(
+         <Week days={days} />,
+         document.getElementById('week')
+     );
+
+</script>
+</html>
