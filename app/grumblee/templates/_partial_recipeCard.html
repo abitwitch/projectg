@@ -4,7 +4,7 @@
 
   <div class="recipecard_container">
     <div class="recipecard_leftpane">
-      <img class="recipecard_image" src="{% with 'images/userImages/recipeThumbnails/'|add:recipe.guid|add:'.jpg' as image_static %}  {% static image_static %} {% endwith %}" alt="" onerror="this.style.display='none'">
+      <img class="recipecard_image" draggable="false" src="{% with 'images/userImages/recipeThumbnails/'|add:recipe.guid|add:'.jpg' as image_static %}  {% static image_static %} {% endwith %}" alt="" onerror="this.style.display='none'">
     </div>
     <div class="recipecard_rightpane">
       <div class="recipecard_righttoppane">{{recipe.name}}</div>

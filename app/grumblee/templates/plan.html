@@ -21,6 +21,7 @@
       var recipeGuid = ev.dataTransfer.getData("text");
       var dayGuid=$("#"+recipeGuid).closest(".dayDrop")[0].id;
       removeRecipeFromDay(recipeGuid,dayGuid);
+
     } else if (ev.target.classList.contains("dayDrop") || ev.target.classList.contains("dayPlaceholder")) {
       //add recipe to day
       var recipeGuid = ev.dataTransfer.getData("text");
@@ -68,6 +69,7 @@
     //update UI
     dayElem=document.getElementById(dayGuid);
     dayElem.appendChild(document.getElementById(recipeGuid));
+    //refreshAllDays();
     refreshDay(dayElem);
   }
 
@@ -106,6 +108,14 @@
       dayElem.classList.remove('emptyDay');
       $("#"+dayElem.id+" .dayPlaceholder").hide();
     }
+  }
+
+  function refreshAllDays(){
+    var days = document.getElementsByClass('dayDrop');
+
+    for (var i = 0; i < days.length; i++) {
+        refreshDay(days[i]);
+    }​
   }
 
   function refreshGroceryList(){
