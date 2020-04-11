@@ -69,8 +69,8 @@
     //update UI
     dayElem=document.getElementById(dayGuid);
     dayElem.appendChild(document.getElementById(recipeGuid));
-    //refreshAllDays();
-    refreshDay(dayElem);
+    refreshAllDays();
+    //refreshDay(dayElem);
   }
 
   function removeRecipeFromDay(recipeGuid,dayGuid){
@@ -111,11 +111,11 @@
   }
 
   function refreshAllDays(){
-    var days = document.getElementsByClass('dayDrop');
+    var elements = document.getElementsByClassName('dayDrop');
 
-    for (var i = 0; i < days.length; i++) {
-        refreshDay(days[i]);
-    }​
+    for (var i = 0; i < elements.length; i++) {
+        refreshDay(elements[i]);
+    }
   }
 
   function refreshGroceryList(){
@@ -197,14 +197,12 @@
                     </div>
                   </td>
                   <td>
-                    <div>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Recipes</div>
-                        <div id="recipes" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body recipeContainer">
-                          {% for recipe in recipes %}
-                          {% include '_partial_recipeCard.html' with recipe=recipe %}
-                          {% endfor %}
-                        </div>
+                    <div class="panel panel-default" style="calc(100vh - 100px);">
+                      <div class="panel-heading">Recipes</div>
+                      <div id="recipes" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 100vh;" class="panel-body recipeContainer">
+                        {% for recipe in recipes %}
+                        {% include '_partial_recipeCard.html' with recipe=recipe %}
+                        {% endfor %}
                       </div>
                     </div>
                   </td>

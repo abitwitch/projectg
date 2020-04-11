@@ -7,19 +7,35 @@ class DayOfWeek extends React.Component {
       var dayGuid;
       if (event.target.classList.contains("dayPlaceholder")){
         dayGuid = event.target.parentElement.id;
+        event.target.parentElement.classList.remove('day_drag_hover');
       } else {
         dayGuid = event.target.id;
+        event.target.classList.remove('day_drag_hover');
       }
       addRecipeToDay(recipeGuid,dayGuid);
+    }
+    onDragOver_handler(event){
+      event.preventDefault();
+      if (event.target.classList.contains("dayDrop")){
+        event.target.classList.add('day_drag_hover');
+      } else {
+        event.target.parentElement.classList.add('day_drag_hover');
+      }
 
-
-
+    }
+    onDragLeave_handler(event){
+      event.preventDefault();
+      if (event.target.classList.contains("dayDrop")){
+        event.target.classList.remove('day_drag_hover');
+      } else {
+        event.target.parentElement.classList.remove('day_drag_hover');
+      }
     }
     render() {
         return (
           <div className="panel panel-default">
             <div className="panel-heading">{this.props.dayName}</div>
-            <div id={this.props.dayId} onDrop={this.drop} onDragOver={this.preventDefault} className="dayDrop emptyDay panel-body">
+            <div id={this.props.dayId} onDrop={this.drop} onDragOver={this.onDragOver_handler} onDragLeave={this.onDragLeave_handler} className="dayDrop emptyDay panel-body" >
               <div className="dayPlaceholder">drag and drop a recipe</div>
             </div>
           </div>

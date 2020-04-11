@@ -18,6 +18,17 @@
   height: 100%;
 }
 
+.day_drag_hover.dayDrop{
+  background-color:lightyellow;
+  border-style: dashed;
+  border-color: darkgrey;
+}
+
+.dayDrop{
+  border-style: dashed;
+  border-color: white;
+}
+
 .recipecard_leftpane {
     float: left;
     background-color: rosybrown;
