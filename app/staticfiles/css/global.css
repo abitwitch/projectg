@@ -77,3 +77,7 @@
   padding-right: 1em;
   margin-bottom: -1.25em;
 }
+
+input[type=checkbox]:checked + label.strikethrough{
+  text-decoration: line-through;
+}

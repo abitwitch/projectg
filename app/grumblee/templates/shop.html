@@ -1,0 +1,14 @@
+<html>
+{% include '_partial_header.html' %}
+  <body>
+    <h1>Shop</h1>
+    <div id="groceryList" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body">
+      {% for groceryItem in groceryItems %}
+      <input id="{{groceryItem.guid}}" class="form-check-input" type="checkbox" name="{{groceryItem.guid}}" value="1"/>
+      <label class="strikethrough form-check-label">{{groceryItem.ingredient.name}}</label>
+      <br />
+      {% endfor %}
+    </div>
+
+  </body>
+</html>

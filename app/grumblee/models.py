@@ -97,6 +97,8 @@ class Week(models.Model):
         self.day7.save()
     def __str__(self):
         return str(self.guid)
+    def days(self):
+        return [self.day1, self.day2, self.day3, self.day4, self.day5, self.day6, self.day7]
 
 class GroceryList(models.Model):
     guid=models.CharField(primary_key=True, max_length=100, blank=False, unique=True, default=uuid.uuid4)

@@ -41,6 +41,34 @@ def plan(request):
     }
     return render(request, 'plan.html', context)
 
+def view(request,weekGuid=""):
+    try:
+        week = Week.objects.get(guid=weekGuid)
+    except:
+        return render(request, 'week_notfound.html', {})
+    recipes=[]
+    for day in week.days():
+        for recipe in day.recipes.all():
+            recipes.append(recipe)
+    context = {
+        'recipes': recipes,
+        'week': week,
+        'days': str(json.dumps(getDaysOfWeekAsJson(week.guid))),
+        'recipeGuidsByDay': str(json.dumps(getRecipeByDayAsJson(week.guid)))
+    }
+
+    return render(request, 'view.html', context)
+
+def shop(request,weekGuid=""):
+    week = Week.objects.get(guid=weekGuid)
+    groceryItems=GroceryItem.objects.filter(week=week)
+    context = {
+        'week': week,
+        'groceryItems': groceryItems
+    }
+    return render(request, 'shop.html', context)
+
+
 def addRecipeToDay(request):
     recipeGuid=request.GET.get('recipeGuid', None)
     dayGuid=request.GET.get('dayGuid', None)
@@ -107,4 +135,14 @@ def getDaysOfWeekAsJson(weekGuid):
         {'id': week.day6.guid, 'dayName': week.day6.date.strftime("%A"), 'date': week.day6.date.strftime("%Y-%m-%d")},
         {'id': week.day7.guid, 'dayName': week.day7.date.strftime("%A"), 'date': week.day7.date.strftime("%Y-%m-%d")}
     ]
+    return context
+
+def getRecipeByDayAsJson(weekGuid):
+    week=Week.objects.get(guid=weekGuid)
+    context=[]
+    for day in week.days():
+        guids=[]
+        for recipe in day.recipes.all():
+            guids.append(recipe.guid)
+        context.append({'id':day.guid, 'recipeGuids':guids})
     return context

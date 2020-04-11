@@ -266,12 +266,7 @@
 </body>
 <script type="text/babel">
   var days= {{days|safe}}
-  // jQuery.each(days, function(id, val) {
-  //   ReactDOM.render(
-  //       <DayOfWeek dayID={id} dayName={val["dayName"]}/>,
-  //       document.getElementById('week')
-  //   );
-  // });
+
   ReactDOM.render(
          <Week days={days} />,
          document.getElementById('week')

@@ -1,0 +1,24 @@
+<html>
+{% include '_partial_header.html' %}
+  <body>
+    <h1>View</h1>
+    {% for recipe in recipes %}
+    {% include '_partial_recipeCard.html' with recipe=recipe %}
+    {% endfor %}
+    <div class="panel-group" id="week">
+      <!-- Built in react -->
+    </div>
+
+  </body>
+  <script type="text/babel">
+    var days= {{days|safe}}
+    var recipeGuidsByDay= {{recipeGuidsByDay|safe}}
+
+    ReactDOM.render(
+           <WeekView days={days} recipeGuidsByDay={recipeGuidsByDay}/>,
+           document.getElementById('week')
+       );
+
+
+  </script>
+</html>
