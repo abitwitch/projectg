@@ -1,3 +1,13 @@
+/*
+color scheme
+Oragne:        #E27D60
+Light teal:    #85DCBA
+light orange:  #E8A87C
+Pink:          #C38D9E
+Dark teal:     #41B3A3
+*/
+
+
 
 .recipeCard {
   background-color: white;
@@ -19,9 +29,9 @@
 }
 
 .day_drag_hover.dayDrop{
-  background-color:lightyellow;
+  background-color:#41B3A3;
   border-style: dashed;
-  border-color: darkgrey;
+  border-color: #E27D60;
 }
 
 .dayDrop{
@@ -80,4 +90,51 @@
 
 input[type=checkbox]:checked + label.strikethrough{
   text-decoration: line-through;
+}
+
+.header {
+  background: #41B3A3;
+}
+
+.header-content {
+    padding-bottom: 1em;
+    padding-left: 1em;
+    font-family: Pacifico;
+    color: #E27D60;
+    text-shadow: 2px 2px 4px #333;
+}
+
+.header-content a {
+    text-decoration: none;
+}
+
+html {
+  background: #41B3A3;
+}
+
+.footer {
+  background: #41B3A3;
+
+}
+
+.footer-content {
+    padding-top: 4em;
+}
+
+.page-title {
+    font-family: Pacifico;
+    padding-left: 0.5em;
+    color: #41B3A3;
+}
+
+.share-button {
+  margin: 0.6em
+}
+
+.panel > .panel-heading {
+  background-color: #85DCBA;
+}
+
+.panel > .panel-sectionhead {
+  background-color: #E27D60;
 }

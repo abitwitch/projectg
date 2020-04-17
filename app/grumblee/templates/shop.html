@@ -1,5 +1,8 @@
-<html>
-{% include '_partial_header.html' %}
+{% extends "base.html" %}
+
+
+{% block content %}
+
   <body>
     <h1>Shop</h1>
     <div id="groceryList" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body">
@@ -9,6 +12,6 @@
       <br />
       {% endfor %}
     </div>
-
   </body>
-</html>
+
+{% endblock %}

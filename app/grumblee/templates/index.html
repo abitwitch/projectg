@@ -1,69 +1,10 @@
-Hello world
-{% include '_partial_header.html' %}
-
-<style>
+{% extends "base.html" %}
 
 
-.recipecard_container {
-  position: absolute;
-}
-
-.recipecard_leftpane {
-    float: left;
-    background-color: rosybrown;
-}
-
-.recipecard_rightpane {
-  float: right;
-  background-color: yellow;
-}
-
- .recipecard_righttoppane {
-  height: 50%;
-  background-color: lightgreen;
-}
-.recipecard_rightbottompane {
-
-  background-color: lightblue;
-}
-
-</style>
-
+{% block content %}
 
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-4">
-      One of three columns
-    </div>
-    <div class="col">
-      One of three columns
-    </div>
-    <div class="col-sm-4">
-      One of three columns
-
-                  <div class="row">
-                      title
-                   </div>
-                   <div class="row">
-                       info
-                    </div>
-
-    </div>
-  </div>
-</div>
-
-<br>
-
-<div class="recipecard_container">
-  <div class="recipecard_leftpane">
-    <img src="  /static/images/userImages/recipeThumbnails/cfe4e55b-03d7-4ad5-915a-2d2beb8987a1.jpg " alt="" onerror="this.style.display='none'">
-  </div>
-  <div class="recipecard_rightpane">
-    <div class="recipecard_righttoppane">aaa</div>
-    <div class="recipecard_rightbottompane">bbb</div>
-  </div>
-</div>
-
-
+LOGIN
 </body>
+
+{% endblock %}

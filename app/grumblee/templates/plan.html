@@ -1,8 +1,7 @@
-<html>
-{% include '_partial_header.html' %}
+{% extends "base.html" %}
 
 
-
+{% block content %}
 <script>
 
 
@@ -167,6 +166,20 @@
     refreshGroceryList();
   }
 
+  function copyLinkToClipboard() {
+    var tempInput = document.createElement("input");
+    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = window.location.href.replace("plan","view")+"{{week.guid}}";
+    document.body.appendChild(tempInput);
+
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    alert("Link copied to clipboard");
+  }
+
 
 
 
@@ -175,12 +188,18 @@
 
 <body>
 
-  <h1>Plan</h1>
+
+  <button id="clickboardButton" type="button" class="btn btn-default btn-lg pull-right share-button" onclick="copyLinkToClipboard()" title="Link copied to clipboard">
+    <span class="glyphicon glyphicon-link"></span> Share
+  </button>
+
+  <h1 class="page-title">Plan</h1>
+
   <div id="test"></div>
   <div>
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading panel-sectionhead">
           <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Meal Plan</a>
                 </h4>
@@ -191,15 +210,14 @@
               <table class="table-striped" style="width:100%">
                 <tr>
                   <td>
-                    <h3>Week</h3>({{week.guid}})
                     <div class="panel-group" id="week">
                       <!-- Built in react -->
                     </div>
                   </td>
                   <td>
-                    <div class="panel panel-default" style="calc(100vh - 100px);">
+                    <div class="panel panel-default" style="calc(80vh - 100px);">
                       <div class="panel-heading">Recipes</div>
-                      <div id="recipes" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 100vh;" class="panel-body recipeContainer">
+                      <div id="recipes" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 80vh;" class="panel-body recipeContainer">
                         {% for recipe in recipes %}
                         {% include '_partial_recipeCard.html' with recipe=recipe %}
                         {% endfor %}
@@ -225,14 +243,14 @@
         </div>
       </div>
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading panel-sectionhead">
           <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Grocery List</a>
                 </h4>
         </div>
         <div id="collapseTwo" class="panel-collapse collapse">
           <div class="panel-body">
-            <table>
+            <!-- <table>
               <tr>
                 <td>
                   <div class="panel panel-default">
@@ -253,7 +271,24 @@
                   </div>
                 </td>
               </tr>
-            </table>
+            </table> -->
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-6 panel panel-default">
+                  <div class="panel-heading">Grocery list</div>
+                  <div id="groceryList" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body emptyGroceryList">
+                    <div class="groceryListPlaceholder">drag and drop a ingredient or add a recipe to the week</div>
+                  </div>
+                </div>
+                <div class="col-sm-6 panel panel-default">
+                  <div class="panel-heading">Ingredients</div>
+                  <div id="ingredients" ondrop="drop(event)" ondragover="allowDrop(event)" class="panel-body">
+                    {% for ingredient in ingredients %}
+                    <div id="{{ingredient.guid}}" draggable="true" ondragstart="drag(event)" class="ingredient">-{{ingredient.name}}</div>
+                    {% endfor %}
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -274,6 +309,4 @@
 
 </script>
 
-{% include '_partial_footer.html' %}
-
-</html>
+{% endblock %}

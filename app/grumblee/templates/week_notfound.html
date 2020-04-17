@@ -1,6 +1,10 @@
-<html>
-{% include '_partial_header.html' %}
-  <body>
-    <div class="alert alert-warning" role="alert">The week was not found or is inaccessible</div>
-  </body>
-</html>
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<body>
+  <div class="alert alert-warning" role="alert">The week was not found or is inaccessible</div>
+</body>
+
+{% endblock %}

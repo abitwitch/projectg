@@ -1,24 +1,50 @@
-<html>
-{% include '_partial_header.html' %}
-  <body>
-    <h1>View</h1>
-    {% for recipe in recipes %}
-    {% include '_partial_recipeCard.html' with recipe=recipe %}
-    {% endfor %}
-    <div class="panel-group" id="week">
-      <!-- Built in react -->
-    </div>
-
-  </body>
-  <script type="text/babel">
-    var days= {{days|safe}}
-    var recipeGuidsByDay= {{recipeGuidsByDay|safe}}
-
-    ReactDOM.render(
-           <WeekView days={days} recipeGuidsByDay={recipeGuidsByDay}/>,
-           document.getElementById('week')
-       );
+{% extends "base.html" %}
 
 
-  </script>
-</html>
+{% block content %}
+
+<script>
+  function copyLinkToClipboard() {
+    var tempInput = document.createElement("input");
+    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = window.location.href.replace("view","shop");
+    document.body.appendChild(tempInput);
+
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    alert("Link copied to clipboard");
+  }
+</script>
+
+<body>
+  <button id="clickboardButton" type="button" class="btn btn-default btn-lg pull-right share-button" onclick="copyLinkToClipboard()" title="Link copied to clipboard">
+    <span class="glyphicon glyphicon-shopping-cart"></span> Shop
+  </button>
+  {% for recipe in recipes %}
+  {% include '_partial_recipeCard.html' with recipe=recipe %}
+  {% endfor %}
+  <div class="panel-group" id="week">
+    <!-- Built in react -->
+  </div>
+
+</body>
+<script type="text/babel">
+  var days= {{days|safe}}
+  var recipeGuidsByDay= {{recipeGuidsByDay|safe}}
+
+  ReactDOM.render(
+         <WeekView days={days} recipeGuidsByDay={recipeGuidsByDay}/>,
+         document.getElementById('week')
+     );
+
+
+ s
+
+
+</script>
+
+
+{% endblock %}
