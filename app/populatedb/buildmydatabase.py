@@ -16,9 +16,11 @@ with open(recipe_csv,"r") as f:
 
 for line in content.split("\n")[1:]:
     name,minutesRequired,servings,steps,ingredientsWithquantities=line.split("|")
-    r = Recipe(name='',steps='',minutesRequired=45,servings=4)
+    #r = Recipe(name=name,steps=steps,minutesRequired=minutesRequired,servings=servings)
+    #r.save()
     for ingredientWithquantities in ingredientsWithquantities:
-        ingredientWithquantities
+        quantities,ingredient=ingredientsWithquantities.split(" ", 1)
+        print (ingredient)
 
 '''
 r = Recipe(name='',steps='',minutesRequired=45,servings=4)
