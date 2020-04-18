@@ -18,8 +18,8 @@ for line in content.split("\n")[1:]:
     if line.strip()=="":
         continue
     name,minutesRequired,servings,steps,ingredientsWithquantities=line.split("|")
-    #recipe = models.Recipe(name=name,steps=steps,minutesRequired=minutesRequired,servings=servings)
-    #recipe.save()
+    recipe = models.Recipe(name=name,steps=steps,minutesRequired=minutesRequired,servings=servings)
+    recipe.save()
     for ingredientWithquantities in ingredientsWithquantities.split(";"):
         quantity,iname=ingredientWithquantities.split(" ", 1)
         iname=iname.strip()
@@ -31,9 +31,9 @@ for line in content.split("\n")[1:]:
             ingredientExists=True
             break
         if not ingredientExists:
-            pass#ingredient = models.Ingredient(name=iname,defaultQuantity=quantity*4)
-            #ingredient.save()
-        #recipeIngredient = models.RecipeIngredients(recipe=recipe,ingredient=ingredient,quantity=quantity)
-        #recipeIngredient.save()
+            ingredient = models.Ingredient(name=iname,defaultQuantity=quantity*4)
+            ingredient.save()
+        recipeIngredient = models.RecipeIngredients(recipe=recipe,ingredient=ingredient,quantity=quantity)
+        recipeIngredient.save()
 
 print("done")

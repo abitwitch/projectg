@@ -29,8 +29,8 @@ def reacttest(request):
     #return HttpResponse('plan. eat. share.')
 
 def plan(request):
-    recipes = Recipe.objects.all()[:10]
-    ingredients = Ingredient.objects.all()[:10]
+    recipes = Recipe.objects.all()
+    ingredients = Ingredient.objects.all()
     week = Week.objects.create()
     context = {
         'recipes': recipes,
