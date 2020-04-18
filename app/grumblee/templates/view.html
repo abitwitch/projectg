@@ -20,9 +20,11 @@
 </script>
 
 <body>
-  <button id="clickboardButton" type="button" class="btn btn-default btn-lg pull-right share-button" onclick="copyLinkToClipboard()" title="Link copied to clipboard">
-    <span class="glyphicon glyphicon-shopping-cart"></span> Shop
-  </button>
+  <form action="{% url 'shop' weekGuid=week.guid %}">
+    <button type="submit" id="clickboardButton" type="button" class="btn btn-default btn-lg pull-right share-button" title="Link copied to clipboard">
+      <span class="glyphicon glyphicon-shopping-cart"></span> Shop
+    </button>
+  </form>
   {% for recipe in recipes %}
   {% include '_partial_recipeCard.html' with recipe=recipe %}
   {% endfor %}
