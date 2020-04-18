@@ -15,20 +15,25 @@ with open(recipe_csv,"r") as f:
     content=f.read()
 
 for line in content.split("\n")[1:]:
+    if line.strip()=="":
+        continue
     name,minutesRequired,servings,steps,ingredientsWithquantities=line.split("|")
-    #r = Recipe(name=name,steps=steps,minutesRequired=minutesRequired,servings=servings)
-    #r.save()
-    for ingredientWithquantities in ingredientsWithquantities:
-        quantities,ingredient=ingredientsWithquantities.split(" ", 1)
-        print (ingredient)
+    #recipe = models.Recipe(name=name,steps=steps,minutesRequired=minutesRequired,servings=servings)
+    #recipe.save()
+    for ingredientWithquantities in ingredientsWithquantities.split(";"):
+        quantity,iname=ingredientWithquantities.split(" ", 1)
+        iname=iname.strip()
+        quantity=int(float(quantity))
+        if quantity==0:
+            quantity+=1
+        ingredientExists=False
+        for ingredient in models.Ingredient.objects.filter(name=iname):
+            ingredientExists=True
+            break
+        if not ingredientExists:
+            pass#ingredient = models.Ingredient(name=iname,defaultQuantity=quantity*4)
+            #ingredient.save()
+        #recipeIngredient = models.RecipeIngredients(recipe=recipe,ingredient=ingredient,quantity=quantity)
+        #recipeIngredient.save()
 
-'''
-r = Recipe(name='',steps='',minutesRequired=45,servings=4)
-r.save()
-
-i = Ingredient(name='')
-i.save()
-
-ri = RecipeIngredients(recipe=r,ingredient=i,quantity=5)
-ri.save()
-'''
+print("done")
